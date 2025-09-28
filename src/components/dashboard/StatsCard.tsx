@@ -9,7 +9,7 @@ interface StatsCardProps {
   change?: number;
   changeType?: 'positive' | 'negative' | 'neutral';
   icon: React.ReactNode;
-  color?: 'primary' | 'success' | 'warning' | 'error';
+  color?: 'primary' | 'success' | 'warning' | 'error' | 'accent';
   loading?: boolean;
 }
 
@@ -27,6 +27,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
     success: 'bg-success-50 text-success-600',
     warning: 'bg-warning-50 text-warning-600',
     error: 'bg-error-50 text-error-600',
+    accent: 'bg-accent-50 text-accent-600',
   };
 
   if (loading) {

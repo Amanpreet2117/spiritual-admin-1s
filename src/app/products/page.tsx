@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout/Layout';
 import { Card, CardBody, CardHeader } from '@/components/ui/Card';
@@ -26,6 +26,8 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+
+import Image from 'next/image';
 
 export default function ProductsPage() {
   const router = useRouter();
@@ -53,13 +55,7 @@ export default function ProductsPage() {
   const [showQuickCreate, setShowQuickCreate] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchProducts();
-    }
-  }, [isAuthenticated, filters]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       const params = {
@@ -144,7 +140,13 @@ export default function ProductsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters, searchTerm]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchProducts();
+    }
+  }, [isAuthenticated, fetchProducts]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -261,9 +263,11 @@ export default function ProductsPage() {
       title: 'Product',
       render: (_: any, record: Product) => (
         <div className="flex items-center space-x-3">
-          <img
+          <Image
             src={record.thumbnailImage || 'https://via.placeholder.com/50x50'}
             alt={record.name}
+            width={50}
+            height={50}
             className="w-12 h-12 rounded-lg object-cover"
           />
           <div>

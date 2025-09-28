@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+import Image from 'next/image';
+
 export default function LowStockPage() {
   const { isAuthenticated, isLoading } = useRequireAuth();
   const [products, setProducts] = useState<Product[]>([]);
@@ -77,11 +79,13 @@ export default function LowStockPage() {
     {
       key: 'product',
       title: 'Product',
-      render: (_, record: Product) => (
+      render: (_: any, record: Product) => (
         <div className="flex items-center space-x-3">
-          <img
+          <Image
             src={record.thumbnailImage || 'https://via.placeholder.com/50x50'}
             alt={record.name}
+            width={50}
+            height={50}
             className="w-12 h-12 rounded-lg object-cover"
           />
           <div>
@@ -94,7 +98,7 @@ export default function LowStockPage() {
     {
       key: 'category',
       title: 'Category',
-      render: (_, record: Product) => (
+      render: (_: any, record: Product) => (
         <div className="text-sm text-gray-600">
           {record.category?.name || 'Uncategorized'}
         </div>
@@ -103,7 +107,7 @@ export default function LowStockPage() {
     {
       key: 'currentStock',
       title: 'Current Stock',
-      render: (_, record: Product) => (
+      render: (_: any, record: Product) => (
         <div className="text-center">
           <div className={`text-lg font-bold ${
             record.stock === 0 ? 'text-error-600' : 
@@ -119,7 +123,7 @@ export default function LowStockPage() {
     {
       key: 'lowStockThreshold',
       title: 'Low Stock Threshold',
-      render: (_, record: Product) => (
+      render: (_: any, record: Product) => (
         <div className="text-center">
           <div className="text-sm font-medium">{record.lowStockThreshold}</div>
           <div className="text-xs text-gray-500">units</div>
@@ -129,7 +133,7 @@ export default function LowStockPage() {
     {
       key: 'status',
       title: 'Status',
-      render: (_, record: Product) => {
+      render: (_: any, record: Product) => {
         const stockStatus = getStockStatus(record);
         const IconComponent = stockStatus.icon;
         return (
@@ -143,7 +147,7 @@ export default function LowStockPage() {
     {
       key: 'price',
       title: 'Price',
-      render: (_, record: Product) => (
+      render: (_: any, record: Product) => (
         <div>
           <div className="font-medium">${Number(record.basePrice || 0).toFixed(2)}</div>
           {record.costPrice && (
@@ -155,7 +159,7 @@ export default function LowStockPage() {
     {
       key: 'actions',
       title: 'Actions',
-      render: (_, record: Product) => (
+      render: (_: any, record: Product) => (
         <div className="flex items-center space-x-2">
           <Button
             size="sm"

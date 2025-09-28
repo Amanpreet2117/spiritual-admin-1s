@@ -27,6 +27,8 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+import Image from 'next/image';
+
 export default function OrdersPage() {
   const { isAuthenticated, isLoading } = useRequireAuth();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -298,7 +300,7 @@ export default function OrdersPage() {
     {
       key: 'orderNumber',
       title: 'Order #',
-      render: (_, record: Order) => (
+      render: (_: any, record: Order) => (
         <div>
           <div className="font-medium text-gray-900">{record.orderNumber}</div>
           <div className="text-sm text-gray-500">
@@ -310,7 +312,7 @@ export default function OrdersPage() {
     {
       key: 'customer',
       title: 'Customer',
-      render: (_, record: Order) => (
+      render: (_: any, record: Order) => (
         <div>
           <div className="font-medium text-gray-900">
             {record.user?.firstName} {record.user?.lastName}
@@ -322,7 +324,7 @@ export default function OrdersPage() {
     {
       key: 'items',
       title: 'Items',
-      render: (_, record: Order) => (
+      render: (_: any, record: Order) => (
         <div>
           <div className="font-medium">{record.items?.length || 0} items</div>
           <div className="text-sm text-gray-500">
@@ -334,7 +336,7 @@ export default function OrdersPage() {
     {
       key: 'status',
       title: 'Status',
-      render: (_, record: Order) => (
+      render: (_: any, record: Order) => (
         <div className="space-y-1">
           <Badge variant={getStatusColor(record.status) as any}>
             {getStatusIcon(record.status)}
@@ -349,7 +351,7 @@ export default function OrdersPage() {
     {
       key: 'total',
       title: 'Total',
-      render: (_, record: Order) => (
+      render: (_: any, record: Order) => (
         <div>
           <div className="font-medium">${Number(record.totalAmount || 0).toFixed(2)}</div>
           <div className="text-sm text-gray-500">
@@ -361,7 +363,7 @@ export default function OrdersPage() {
     {
       key: 'shipping',
       title: 'Shipping',
-      render: (_, record: Order) => (
+      render: (_: any, record: Order) => (
         <div>
           <div className="text-sm text-gray-900">
             {record.shippingAddress.city}, {record.shippingAddress.state}
@@ -375,7 +377,7 @@ export default function OrdersPage() {
     {
       key: 'actions',
       title: 'Actions',
-      render: (_, record: Order) => (
+      render: (_: any, record: Order) => (
         <div className="flex items-center space-x-2">
           <Button
             size="sm"
@@ -589,9 +591,11 @@ export default function OrdersPage() {
                 <div className="space-y-3">
                   {selectedOrder.items?.map((item) => (
                     <div key={item.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
-                      <img
+                      <Image
                         src={item.product?.thumbnailImage || 'https://via.placeholder.com/60x60'}
-                        alt={item.product?.name}
+                        alt={item.product?.name || 'Product image'}
+                        width={60}
+                        height={60}
                         className="w-12 h-12 rounded object-cover"
                       />
                       <div className="flex-1">

@@ -84,7 +84,7 @@ A modern, scalable admin panel for the Spiritual e-commerce platform built with 
    Create a `.env.local` file in the root directory:
    ```env
    # API Configuration
-   NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
+   NEXT_PUBLIC_API_BASE_URL=https://spiritual-article-back-end.onrender.com
    
    # App Configuration
    NEXT_PUBLIC_APP_NAME=Spiritual Admin Panel
@@ -108,7 +108,7 @@ A modern, scalable admin panel for the Spiritual e-commerce platform built with 
    ```
 
 5. **Open your browser**
-   Navigate to `http://localhost:3000`
+   Navigate to `https://spiritual-article-back-end.onrender.com`
 
 ## 🏗️ Project Structure
 

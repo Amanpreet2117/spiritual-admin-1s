@@ -168,37 +168,10 @@ export class ProductService {
     return response.data;
   }
 
-  static async createCategory(categoryData: Partial<Category>): Promise<Category> {
-    const response = await apiClient.post<Category>('/api/categories', categoryData);
-    return response.data;
-  }
-
-  static async updateCategory(id: number, categoryData: Partial<Category>): Promise<Category> {
-    const response = await apiClient.put<Category>(`/api/categories/${id}`, categoryData);
-    return response.data;
-  }
-
-  static async deleteCategory(id: number): Promise<void> {
-    await apiClient.delete(`/api/categories/${id}`);
-  }
-
   // Purposes
   static async getPurposes(): Promise<Purpose[]> {
     const response = await apiClient.get<Purpose[]>('/api/purposes');
     return response.data;
   }
-
-  static async createPurpose(purposeData: Partial<Purpose>): Promise<Purpose> {
-    const response = await apiClient.post<Purpose>('/api/purposes', purposeData);
-    return response.data;
-  }
-
-  static async updatePurpose(id: number, purposeData: Partial<Purpose>): Promise<Purpose> {
-    const response = await apiClient.put<Purpose>(`/api/purposes/${id}`, purposeData);
-    return response.data;
-  }
-
-  static async deletePurpose(id: number): Promise<void> {
-    await apiClient.delete(`/api/purposes/${id}`);
-  }
 }
+

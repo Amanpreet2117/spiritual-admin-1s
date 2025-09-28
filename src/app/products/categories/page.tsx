@@ -133,7 +133,7 @@ export default function CategoriesPage() {
     {
       key: 'name',
       title: 'Category',
-      render: (_, record: Category) => (
+      render: (_: any, record: Category) => (
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
             <Folder className="h-5 w-5 text-primary-600" />
@@ -148,7 +148,7 @@ export default function CategoriesPage() {
     {
       key: 'description',
       title: 'Description',
-      render: (_, record: Category) => (
+      render: (_: any, record: Category) => (
         <div className="text-sm text-gray-600 max-w-xs truncate">
           {record.description || 'No description'}
         </div>
@@ -157,14 +157,14 @@ export default function CategoriesPage() {
     {
       key: 'sortOrder',
       title: 'Sort Order',
-      render: (_, record: Category) => (
+      render: (_: any, record: Category) => (
         <div className="text-sm font-medium">{record.sortOrder}</div>
       ),
     },
     {
       key: 'status',
       title: 'Status',
-      render: (_, record: Category) => (
+      render: (_: any, record: Category) => (
         <Badge variant={record.isActive ? 'success' : 'gray'}>
           {record.isActive ? 'Active' : 'Inactive'}
         </Badge>
@@ -173,7 +173,7 @@ export default function CategoriesPage() {
     {
       key: 'createdAt',
       title: 'Created',
-      render: (_, record: Category) => (
+      render: (_: any, record: Category) => (
         <div className="text-sm text-gray-500">
           {new Date(record.createdAt).toLocaleDateString()}
         </div>
@@ -182,7 +182,7 @@ export default function CategoriesPage() {
     {
       key: 'actions',
       title: 'Actions',
-      render: (_, record: Category) => (
+      render: (_: any, record: Category) => (
         <div className="flex items-center space-x-2">
           <Button
             size="sm"
@@ -320,7 +320,7 @@ export default function CategoriesPage() {
                   <div>
                     <label className="form-label">Status</label>
                     <select
-                      {...register('isActive', { valueAsBoolean: true })}
+                      {...register('isActive')}
                       className="input"
                     >
                       <option value="true">Active</option>

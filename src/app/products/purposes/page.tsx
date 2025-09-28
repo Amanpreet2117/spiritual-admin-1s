@@ -132,7 +132,7 @@ export default function PurposesPage() {
     {
       key: 'name',
       title: 'Purpose',
-      render: (_, record: Purpose) => (
+      render: ( _: any, record: Purpose) => (
         <div className="flex items-center space-x-3">
           <div 
             className="w-10 h-10 rounded-lg flex items-center justify-center"
@@ -150,7 +150,7 @@ export default function PurposesPage() {
     {
       key: 'description',
       title: 'Description',
-      render: (_, record: Purpose) => (
+      render: ( _: any, record: Purpose) => (
         <div className="text-sm text-gray-600 max-w-xs truncate">
           {record.description || 'No description'}
         </div>
@@ -159,7 +159,7 @@ export default function PurposesPage() {
     {
       key: 'color',
       title: 'Color',
-      render: (_, record: Purpose) => (
+      render: ( _: any, record: Purpose) => (
         <div className="flex items-center space-x-2">
           <div 
             className="w-6 h-6 rounded-full border-2 border-gray-200"
@@ -172,14 +172,14 @@ export default function PurposesPage() {
     {
       key: 'sortOrder',
       title: 'Sort Order',
-      render: (_, record: Purpose) => (
+      render: ( _: any, record: Purpose) => (
         <div className="text-sm font-medium">{record.sortOrder}</div>
       ),
     },
     {
       key: 'status',
       title: 'Status',
-      render: (_, record: Purpose) => (
+      render: ( _: any, record: Purpose) => (
         <Badge variant={record.isActive ? 'success' : 'gray'}>
           {record.isActive ? 'Active' : 'Inactive'}
         </Badge>
@@ -188,7 +188,7 @@ export default function PurposesPage() {
     {
       key: 'createdAt',
       title: 'Created',
-      render: (_, record: Purpose) => (
+      render: ( _: any, record: Purpose) => (
         <div className="text-sm text-gray-500">
           {new Date(record.createdAt).toLocaleDateString()}
         </div>
@@ -197,7 +197,7 @@ export default function PurposesPage() {
     {
       key: 'actions',
       title: 'Actions',
-      render: (_, record: Purpose) => (
+      render: ( _: any, record: Purpose) => (
         <div className="flex items-center space-x-2">
           <Button
             size="sm"
@@ -344,7 +344,7 @@ export default function PurposesPage() {
                 <div>
                   <label className="form-label">Status</label>
                   <select
-                    {...register('isActive', { valueAsBoolean: true })}
+                    {...register('isActive')}
                     className="input"
                   >
                     <option value="true">Active</option>

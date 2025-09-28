@@ -97,14 +97,16 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   );
 };
 
-const TableBody: React.FC<{ 
-  data: any[];
-  columns: Column<any>[];
-  rowKey: string | ((record: any) => string | number);
-  onRow?: (record: any, index: number) => { onClick?: () => void; className?: string };
+interface TableBodyProps<T> {
+  data: T[];
+  columns: Column<T>[];
+  rowKey: keyof T | ((record: T) => string | number);
+  onRow?: (record: T, index: number) => { onClick?: () => void; className?: string };
   loading?: boolean;
   emptyText?: string;
-}> = ({ data, columns, rowKey, onRow, loading, emptyText }) => {
+}
+
+const TableBody = <T,>({ data, columns, rowKey, onRow, loading, emptyText }: TableBodyProps<T>) => {
   if (loading) {
     return (
       <tbody className="table-body">
@@ -138,7 +140,7 @@ const TableBody: React.FC<{
     <tbody className="table-body">
       {data.map((record, index) => {
         const rowProps = onRow ? onRow(record, index) : {};
-        const key = typeof rowKey === 'function' ? rowKey(record) : record[rowKey];
+        const key = typeof rowKey === 'function' ? rowKey(record) : (record as any)[rowKey as string];
 
         return (
           <tr
@@ -163,7 +165,7 @@ const TableBody: React.FC<{
                     column.className
                   )}
                 >
-                  {renderedValue}
+                  {renderedValue as React.ReactNode}
                 </td>
               );
             })}
@@ -174,12 +176,12 @@ const TableBody: React.FC<{
   );
 };
 
-function Table<T>({
+function Table<T extends { id?: string | number }>({
   data,
   columns,
   loading = false,
   pagination,
-  rowKey = 'id',
+  rowKey = (record: T) => record.id ?? Math.random(),
   onRow,
   className,
   emptyText,
@@ -189,7 +191,7 @@ function Table<T>({
       <div className="overflow-x-auto">
         <table className="table">
           <TableHeader columns={columns} />
-          <TableBody
+          <TableBody<T>
             data={data}
             columns={columns}
             rowKey={rowKey}

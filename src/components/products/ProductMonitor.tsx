@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+import Image from 'next/image';
+
 interface ProductMonitorProps {
   refreshInterval?: number; // in milliseconds
 }
@@ -183,9 +185,11 @@ export const ProductMonitor: React.FC<ProductMonitorProps> = ({
             <div className="space-y-3">
               {recentProducts.map((product) => (
                 <div key={product.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <img
+                  <Image
                     src={product.thumbnailImage || 'https://via.placeholder.com/40x40'}
                     alt={product.name}
+                    width={40}
+                    height={40}
                     className="w-10 h-10 rounded-lg object-cover"
                   />
                   <div className="flex-1 min-w-0">
@@ -224,9 +228,11 @@ export const ProductMonitor: React.FC<ProductMonitorProps> = ({
                   
                   return (
                     <div key={product.id} className="flex items-center space-x-3 p-3 bg-warning-50 rounded-lg">
-                      <img
+                      <Image
                         src={product.thumbnailImage || 'https://via.placeholder.com/40x40'}
                         alt={product.name}
+                        width={40}
+                        height={40}
                         className="w-10 h-10 rounded-lg object-cover"
                       />
                       <div className="flex-1 min-w-0">

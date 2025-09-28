@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+import Image from 'next/image';
+
 interface QuickProductCreateProps {
   onProductCreated?: (product: any) => void;
   onCancel?: () => void;
@@ -45,11 +47,14 @@ export const QuickProductCreate: React.FC<QuickProductCreateProps> = ({
   const handleImageUpload = async (file: File) => {
     try {
       setUploading(true);
-      const imageUrl = await UploadService.uploadFile(file);
-      setImages(prev => [...prev, imageUrl]);
+      const { url } = await UploadService.uploadToS3(file);
+      if (!url) {
+        throw new Error('No URL returned from upload');
+      }
+      setImages(prev => [...prev, url]);
       toast.success('Image uploaded successfully');
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error('Error uploading image:', error instanceof Error ? error.message : error);
       toast.error('Failed to upload image');
     } finally {
       setUploading(false);
@@ -79,7 +84,6 @@ export const QuickProductCreate: React.FC<QuickProductCreateProps> = ({
         stock: Number(formData.stock || 0),
         status: formData.status as 'active' | 'inactive' | 'draft',
         categoryId: Number(formData.categoryId),
-        images: images.map(url => ({ imageUrl: url, altText: formData.name })),
         shortDescription: formData.description?.substring(0, 100) || '',
         sku: `SKU-${Date.now()}`,
         weight: 0.1,
@@ -227,9 +231,11 @@ export const QuickProductCreate: React.FC<QuickProductCreateProps> = ({
               <div className="mt-3 flex flex-wrap gap-2">
                 {images.map((image, index) => (
                   <div key={index} className="relative">
-                    <img
+                    <Image
                       src={image}
                       alt={`Product ${index + 1}`}
+                      width={64}
+                      height={64}
                       className="w-16 h-16 object-cover rounded-lg"
                     />
                     <button

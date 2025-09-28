@@ -8,8 +8,8 @@ import { Input } from '@/components/ui/Input';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
 import { useRequireAuth } from '@/hooks/useAuth';
-import { User, UserFilters } from '@/types';
-import { UserService } from '@/services/userService';
+import { User } from '@/types';
+import { UserFilters, UserService } from '@/services/userService';
 import {
   Search,
   Filter,
@@ -166,7 +166,7 @@ export default function UsersPage() {
       key: 'select',
       title: '',
       width: 50,
-      render: (_, record: User) => (
+      render: (_: any, record: User) => (
         <input
           type="checkbox"
           checked={selectedUsers.includes(record.id)}
@@ -184,7 +184,7 @@ export default function UsersPage() {
     {
       key: 'user',
       title: 'User',
-      render: (_, record: User) => (
+      render: (_: any, record: User) => (
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
             <span className="text-primary-600 font-medium text-sm">
@@ -205,7 +205,7 @@ export default function UsersPage() {
     {
       key: 'contact',
       title: 'Contact',
-      render: (_, record: User) => (
+      render: (_: any, record: User) => (
         <div>
           <div className="text-sm text-gray-900">{record.email}</div>
           {record.phone && (
@@ -217,7 +217,7 @@ export default function UsersPage() {
     {
       key: 'role',
       title: 'Role',
-      render: (_, record: User) => (
+      render: (_: any, record: User) => (
         <Badge
           variant={
             record.role?.name === 'admin' || record.role?.name === 'superadmin'
@@ -233,7 +233,7 @@ export default function UsersPage() {
     {
       key: 'status',
       title: 'Status',
-      render: (_, record: User) => (
+      render: (_: any, record: User) => (
         <Badge variant={record.isActive ? 'success' : 'gray'}>
           {record.isActive ? 'Active' : 'Inactive'}
         </Badge>
@@ -242,7 +242,7 @@ export default function UsersPage() {
     {
       key: 'joined',
       title: 'Joined',
-      render: (_, record: User) => (
+      render: (_: any, record: User) => (
         <div className="text-sm text-gray-500">
           {new Date(record.createdAt).toLocaleDateString()}
         </div>
@@ -251,7 +251,7 @@ export default function UsersPage() {
     {
       key: 'actions',
       title: 'Actions',
-      render: (_, record: User) => (
+      render: (_: any, record: User) => (
         <div className="flex items-center space-x-2">
           <Button
             size="sm"

@@ -13,6 +13,8 @@ import { UploadService } from '@/services/uploadService';
 import { Plus, X, Upload, Image as ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+import Image from 'next/image';
+
 interface ProductFormProps {
   product?: any;
   onSave: (data: ProductFormData) => Promise<void>;
@@ -442,9 +444,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               <div className="space-y-2">
                 {images.map((image, index) => (
                   <div key={index} className="relative group">
-                    <img
+                    <Image
                       src={image}
                       alt={`Product ${index + 1}`}
+                      width={500}
+                      height={500}
                       className="w-full h-32 object-cover rounded-lg"
                     />
                     <button

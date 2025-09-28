@@ -105,7 +105,7 @@ export const Chart: React.FC<ChartProps> = ({
         <h3 className="text-lg font-medium text-gray-900 mb-4">{title}</h3>
         <div style={{ height }}>
           <ResponsiveContainer width="100%" height="100%">
-            {renderChart()}
+            {renderChart() ?? <></>}
           </ResponsiveContainer>
         </div>
       </div>

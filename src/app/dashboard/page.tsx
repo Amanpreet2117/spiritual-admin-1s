@@ -161,7 +161,7 @@ export default function DashboardPage() {
     {
       key: 'customer',
       title: 'Customer',
-      render: (_, record: any) => (
+      render: (_: any, record: any) => (
         <div>
           <div className="font-medium text-gray-900">
             {record.shippingAddress.firstName} {record.shippingAddress.lastName}
@@ -173,7 +173,7 @@ export default function DashboardPage() {
     {
       key: 'status',
       title: 'Status',
-      render: (_, record: any) => (
+      render: (_: any, record: any) => (
         <Badge
           variant={
             record.status === 'pending'
@@ -190,14 +190,14 @@ export default function DashboardPage() {
     {
       key: 'totalAmount',
       title: 'Total',
-      render: (_, record: any) => (
+      render: (_: any, record: any) => (
         <div className="font-medium">${Number(record.totalAmount || 0).toFixed(2)}</div>
       ),
     },
     {
       key: 'createdAt',
       title: 'Date',
-      render: (_, record: any) => (
+      render: (_: any, record: any) => (
         <div className="text-sm text-gray-500">
           {new Date(record.createdAt).toLocaleDateString()}
         </div>
@@ -206,7 +206,7 @@ export default function DashboardPage() {
     {
       key: 'actions',
       title: 'Actions',
-      render: (_, record: any) => (
+      render: (_: any , record: any) => (
         <Button size="sm" variant="secondary">
           View
         </Button>

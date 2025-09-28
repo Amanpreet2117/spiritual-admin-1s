@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout/Layout';
 import { Modal } from '@/components/ui/Modal';
@@ -21,31 +21,31 @@ export default function EditProductPage() {
   const productId = params?.id ? parseInt(params.id as string) : null;
 
   useEffect(() => {
+    const fetchProduct = async () => {
+      if (!productId) return;
+  
+      try {
+        setLoading(true);
+        console.log('Fetching product for edit with ID:', productId);
+        const productData = await ProductService.getProductById(productId);
+        console.log('Product data for edit received:', productData);
+        setProduct(productData);
+      } catch (error: any) {
+        console.error('Error fetching product for edit:', error);
+        console.error('Error response:', error.response);
+        console.error('Error status:', error.response?.status);
+        console.error('Error data:', error.response?.data);
+        toast.error(error.response?.data?.message || 'Failed to load product');
+        router.push('/products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (isAuthenticated && productId) {
       fetchProduct();
     }
-  }, [isAuthenticated, productId]);
-
-  const fetchProduct = async () => {
-    if (!productId) return;
-
-    try {
-      setLoading(true);
-      console.log('Fetching product for edit with ID:', productId);
-      const productData = await ProductService.getProductById(productId);
-      console.log('Product data for edit received:', productData);
-      setProduct(productData);
-    } catch (error: any) {
-      console.error('Error fetching product for edit:', error);
-      console.error('Error response:', error.response);
-      console.error('Error status:', error.response?.status);
-      console.error('Error data:', error.response?.data);
-      toast.error(error.response?.data?.message || 'Failed to load product');
-      router.push('/products');
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [isAuthenticated, productId, router]);
 
   const handleUpdateProduct = async (data: ProductFormData) => {
     if (!product) return;
@@ -96,7 +96,7 @@ export default function EditProductPage() {
         <div className="text-center py-12">
           <h3 className="mt-2 text-sm font-medium text-gray-900">Product not found</h3>
           <p className="mt-1 text-sm text-gray-500">
-            The product you're trying to edit doesn't exist or has been removed.
+            The product you&apos;re trying to edit doesn&apos;t exist or has been removed.
           </p>
           <div className="mt-6">
             <button

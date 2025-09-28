@@ -1,12 +1,12 @@
 import apiClient from '@/lib/api';
-import { AuthResponse, LoginCredentials, User, ApiResponse } from '@/types';
+import { LoginCredentials, User, ApiResponse } from '@/types';
 import Cookies from 'js-cookie';
 
 export class AuthService {
   // Login user
-  static async login(credentials: LoginCredentials): Promise<AuthResponse> {
+  static async login(credentials: LoginCredentials): Promise<ApiResponse<{ user: User; token: string }>> {
     try {
-      const response = await apiClient.post<AuthResponse>('/api/auth/login', credentials);
+      const response = await apiClient.post<{ user: User; token: string }>('/api/auth/login', credentials);
       
       if (response.success && response.data.token) {
         // Store token and user data in cookies
@@ -66,7 +66,7 @@ export class AuthService {
   // Refresh token (if backend supports it)
   static async refreshToken(): Promise<boolean> {
     try {
-      const response = await apiClient.post<AuthResponse>('/api/auth/refresh');
+      const response = await apiClient.post<{ user: User; token: string }>('/api/auth/refresh');
       if (response.success && response.data.token) {
         Cookies.set('admin_token', response.data.token, { expires: 7 });
         return true;

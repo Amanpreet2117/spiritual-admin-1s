@@ -56,7 +56,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       weight: product?.weight || 0,
       dimensions: product?.dimensions || '',
       thumbnailImage: product?.thumbnailImage || '',
-      status: product?.status || 'draft',
+      status: product?.status || 'active',
       isFeatured: product?.isFeatured || false,
       isDigital: product?.isDigital || false,
       requiresShipping: product?.requiresShipping || true,

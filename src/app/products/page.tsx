@@ -54,6 +54,7 @@ export default function ProductsPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showQuickCreate, setShowQuickCreate] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [viewingProduct, setViewingProduct] = useState<Product | null>(null); // New state for viewing product
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -231,11 +232,17 @@ export default function ProductsPage() {
   };
 
   const handleViewProduct = (productId: number) => {
-    router.push(`/products/${productId}`);
+    const productToView = products.find(p => p.id === productId);
+    if (productToView) {
+      setViewingProduct(productToView);
+    }
   };
 
   const handleEditProduct = (productId: number) => {
-    router.push(`/products/edit/${productId}`);
+    const productToEdit = products.find(p => p.id === productId);
+    if (productToEdit) {
+      setEditingProduct(productToEdit);
+    }
   };
 
   const columns = [
@@ -584,6 +591,43 @@ export default function ProductsPage() {
               onSave={handleUpdateProduct}
               onCancel={() => setEditingProduct(null)}
             />
+          )}
+        </Modal>
+
+        {/* View Product Modal */}
+        <Modal
+          isOpen={!!viewingProduct}
+          onClose={() => setViewingProduct(null)}
+          title="Product Details"
+          size="lg"
+        >
+          {viewingProduct && (
+            <div className="space-y-4 p-4">
+              <h3 className="text-xl font-semibold text-gray-900">{viewingProduct.name}</h3>
+              <p className="text-sm text-gray-500">SKU: {viewingProduct.sku}</p>
+              <div className="flex items-center space-x-4">
+                {viewingProduct.thumbnailImage && (
+                  <Image
+                    src={viewingProduct.thumbnailImage}
+                    alt={viewingProduct.name}
+                    width={150}
+                    height={150}
+                    className="rounded-lg object-cover"
+                  />
+                )}
+                <div className="space-y-2">
+                  <p><strong>Price:</strong> ${Number(viewingProduct.basePrice || 0).toFixed(2)}</p>
+                  {viewingProduct.isOnSale && (
+                    <p className="text-success-600"><strong>Sale Price:</strong> ${Number(viewingProduct.salePrice || 0).toFixed(2)}</p>
+                  )}
+                  <p><strong>Status:</strong> <Badge variant={viewingProduct.status === 'active' ? 'success' : viewingProduct.status === 'draft' ? 'warning' : 'gray'}>{viewingProduct.status}</Badge></p>
+                  <p><strong>Stock:</strong> {viewingProduct.stock} units</p>
+                  <p><strong>Category:</strong> {viewingProduct.category?.name || 'N/A'}</p>
+                </div>
+              </div>
+              <p><strong>Description:</strong> {viewingProduct.description || 'No description provided.'}</p>
+              <Button onClick={() => setViewingProduct(null)}>Close</Button>
+            </div>
           )}
         </Modal>
 

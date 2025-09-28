@@ -179,7 +179,7 @@ export default function DashboardPage() {
             record.status === 'pending'
               ? 'warning'
               : record.status === 'processing'
-              ? 'primary'
+              ? 'accent'
               : 'success'
           }
         >
@@ -207,7 +207,7 @@ export default function DashboardPage() {
       key: 'actions',
       title: 'Actions',
       render: (_: any , record: any) => (
-        <Button size="sm" variant="secondary">
+        <Button size="sm" variant="accent">
           View
         </Button>
       ),
@@ -215,16 +215,16 @@ export default function DashboardPage() {
   ];
 
   const categoryData = [
-    { name: 'Rudraksha', value: 35, color: '#0ea5e9' },
-    { name: 'Mala', value: 25, color: '#22c55e' },
-    { name: 'Gemstones', value: 20, color: '#f59e0b' },
-    { name: 'Yantras', value: 12, color: '#ef4444' },
-    { name: 'Idols', value: 8, color: '#8b5cf6' },
+    { name: 'Rudraksha', value: 35, color: '#ff7a3d' }, // Accent color
+    { name: 'Mala', value: 25, color: '#fca5a5' }, // Error 300
+    { name: 'Gemstones', value: 20, color: '#94a3b8' }, // Secondary 400
+    { name: 'Yantras', value: 12, color: '#86efac' }, // Success 300
+    { name: 'Idols', value: 8, color: '#7dd3fc' }, // Primary 300
   ];
 
   return (
     <Layout title="Dashboard">
-      <div className="space-y-6">
+      <div className="space-y-6 animate-fade-in">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatsCard
@@ -233,7 +233,7 @@ export default function DashboardPage() {
             change={12.5}
             changeType="positive"
             icon={<Package className="h-6 w-6" />}
-            color="primary"
+            color="accent"
             loading={loading}
           />
           <StatsCard
@@ -251,7 +251,7 @@ export default function DashboardPage() {
             change={15.3}
             changeType="positive"
             icon={<Users className="h-6 w-6" />}
-            color="warning"
+            color="accent"
             loading={loading}
           />
           <StatsCard
@@ -272,14 +272,14 @@ export default function DashboardPage() {
             data={stats?.salesData || []}
             type="area"
             dataKey="sales"
-            color="#0ea5e9"
+            color="#ff7a3d"
           />
           <Chart
             title="User Growth"
             data={stats?.userGrowth || []}
             type="line"
             dataKey="users"
-            color="#22c55e"
+            color="#10b981"
           />
         </div>
 

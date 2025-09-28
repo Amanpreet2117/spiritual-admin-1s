@@ -12,6 +12,9 @@ const getButtonClasses = (variant: string, size: string) => {
     error: 'bg-error-600 text-white border border-error-600 hover:bg-error-700 focus:ring-error-500',
     ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-primary-500',
     link: 'text-primary-600 underline-offset-4 hover:underline focus:ring-primary-500',
+    accent: 'bg-accent text-white border border-accent hover:bg-accent-600 focus:ring-accent-500',
+    'outline-secondary': 'bg-transparent text-gray-700 border border-gray-300 hover:bg-gray-100 focus:ring-primary-500',
+    'ghost-accent': 'text-accent hover:bg-accent-50 focus:ring-accent-500',
   };
 
   const sizeClasses = {
@@ -30,7 +33,7 @@ const getButtonClasses = (variant: string, size: string) => {
 };
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'ghost' | 'link';
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'ghost' | 'link' | 'accent' | 'outline-secondary' | 'ghost-accent';
   size?: 'sm' | 'default' | 'lg' | 'xl' | 'icon';
   loading?: boolean;
   leftIcon?: React.ReactNode;

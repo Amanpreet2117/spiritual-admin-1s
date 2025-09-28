@@ -80,6 +80,7 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const [openSubNav, setOpenSubNav] = React.useState<string | null>(null); // State to manage open sub-navigation
 
   const isActive = (href: string) => {
     if (href === '/dashboard') {
@@ -105,7 +106,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       {/* Sidebar */}
       <div
         className={clsx(
-          'fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0',
+          'fixed inset-y-0 left-0 z-50 w-64 bg-accent-50 shadow-xl border-r border-gray-100 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0',
           {
             'translate-x-0': isOpen,
             '-translate-x-full': !isOpen,
@@ -114,78 +115,89 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
+          <div className="flex items-center justify-between px-5 py-5 border-b border-gray-200">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center shadow-md">
+                <span className="text-white font-bold text-lg">S</span>
               </div>
-              <span className="text-lg font-semibold text-gray-900">
-                Spiritual Admin
+              <span className="text-xl font-bold text-gray-800 hover:text-accent-700 transition-colors duration-200">
+                Spiritual
               </span>
             </div>
             <button
               onClick={onClose}
-              className="lg:hidden text-gray-400 hover:text-gray-600"
+              className="lg:hidden text-gray-500 hover:text-accent-700 transition-colors duration-200"
             >
               <X className="h-6 w-6" />
             </button>
           </div>
 
-          {/* User Info */}
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                <span className="text-primary-600 font-medium text-sm">
-                  {user?.firstName?.charAt(0) || user?.username?.charAt(0) || 'A'}
-                </span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">
-                  {user?.firstName && user?.lastName
-                    ? `${user.firstName} ${user.lastName}`
-                    : user?.username}
-                </p>
-                <p className="text-xs text-gray-500 truncate">
-                  {user?.role?.name || 'Admin'}
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+          <nav className="flex-1 px-3 py-4 space-y-2 overflow-y-auto">
             {navigation.map((item) => (
               <div key={item.name}>
                 <Link
                   href={item.href}
                   className={clsx(
-                    'sidebar-link',
+                    'flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-accent-50 hover:text-accent-700 transition-colors duration-200 group',
                     {
-                      'sidebar-link-active': isActive(item.href) || (item.children && hasActiveChild(item.children)),
-                      'sidebar-link-inactive': !isActive(item.href) && (!item.children || !hasActiveChild(item.children)),
+                      'bg-accent-100 text-accent-700 font-semibold border-l-4 border-accent-500': isActive(item.href) || (item.children && hasActiveChild(item.children)),
+                      'text-gray-700': !isActive(item.href) && (!item.children || !hasActiveChild(item.children)),
                     }
                   )}
+                  onClick={(e) => {
+                    if (item.children) {
+                      e.preventDefault();
+                      setOpenSubNav(openSubNav === item.name ? null : item.name);
+                    }
+                  }}
                 >
-                  <item.icon className="h-5 w-5" />
+                  <item.icon className="h-5 w-5 mr-3 group-hover:scale-110 transition-transform duration-200" />
                   <span>{item.name}</span>
+                  {item.children && (
+                    <svg
+                      className={clsx(
+                        'ml-auto h-5 w-5 transform transition-transform duration-200',
+                        { 'rotate-90': openSubNav === item.name }
+                      )}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
                 </Link>
 
                 {/* Sub-navigation */}
                 {item.children && (
-                  <div className="ml-8 mt-1 space-y-1">
+                  <div
+                    className={clsx(
+                      'ml-7 mt-1.5 space-y-1.5 overflow-hidden transition-all duration-300 ease-in-out',
+                      {
+                        'max-h-96 opacity-100': openSubNav === item.name || (isActive(item.href) || (item.children && hasActiveChild(item.children))),
+                        'max-h-0 opacity-0': !(openSubNav === item.name || (isActive(item.href) || (item.children && hasActiveChild(item.children))))
+                      }
+                    )}
+                  >
                     {item.children.map((child) => (
                       <Link
                         key={child.name}
                         href={child.href}
                         className={clsx(
-                          'sidebar-link',
+                          'flex items-center px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-accent-50 hover:text-accent-700 transition-colors duration-200 group',
                           {
-                            'sidebar-link-active': isActive(child.href),
-                            'sidebar-link-inactive': !isActive(child.href),
+                            'bg-accent-50 text-accent-700 font-medium': isActive(child.href),
+                            'text-gray-600': !isActive(child.href),
                           }
                         )}
                       >
-                        <child.icon className="h-4 w-4" />
+                        <child.icon className="h-4 w-4 mr-3 group-hover:scale-110 transition-transform duration-200" />
                         <span>{child.name}</span>
                       </Link>
                     ))}
@@ -196,12 +208,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           </nav>
 
           {/* Footer */}
-          <div className="px-4 py-4 border-t border-gray-200">
+          <div className="px-5 py-4 border-t border-gray-100">
             <button
               onClick={logout}
-              className="w-full flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors"
+              className="w-full flex items-center px-4 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-accent-50 hover:text-accent-700 transition-colors duration-200"
             >
-              <LogOut className="h-5 w-5" />
+              <LogOut className="h-5 w-5 mr-3" />
               <span className="ml-2">Sign out</span>
             </button>
           </div>

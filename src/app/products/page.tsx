@@ -354,25 +354,27 @@ export default function ProductsPage() {
         <div className="flex items-center space-x-2">
           <Button 
             size="sm" 
-            variant="ghost"
+            variant="ghost-accent"
             onClick={() => handleViewProduct(record.id)}
             title="View Product"
+            className="hover:scale-105 transition-transform duration-200"
           >
             <Eye className="h-4 w-4" />
           </Button>
           <Button
             size="sm"
-            variant="ghost"
+            variant="ghost-accent"
             onClick={() => handleEditProduct(record.id)}
             title="Edit Product"
+            className="hover:scale-105 transition-transform duration-200"
           >
             <Edit className="h-4 w-4" />
           </Button>
           <Button
             size="sm"
-            variant="ghost"
+            variant="error"
             onClick={() => handleDeleteProduct(record.id)}
-            className="text-error-600 hover:text-error-700"
+            className="text-error-600 hover:text-error-700 hover:scale-105 transition-transform duration-200"
             title="Delete Product"
           >
             <Trash2 className="h-4 w-4" />
@@ -396,7 +398,7 @@ export default function ProductsPage() {
 
   return (
     <Layout title="Products">
-      <div className="space-y-6">
+      <div className="space-y-6 animate-fade-in">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -406,11 +408,11 @@ export default function ProductsPage() {
             </p>
           </div>
           <div className="mt-4 sm:mt-0 flex space-x-2">
-            <Button variant="secondary" onClick={() => setShowQuickCreate(true)}>
+            <Button variant="outline-secondary" onClick={() => setShowQuickCreate(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Quick Add
             </Button>
-            <Button onClick={() => setShowCreateModal(true)}>
+            <Button variant="accent" onClick={() => setShowCreateModal(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Full Add
             </Button>
@@ -418,9 +420,9 @@ export default function ProductsPage() {
         </div>
 
         {/* Filters */}
-        <Card>
+        <Card className="bg-accent-50">
           <CardBody>
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0 md:space-x-4 mb-4">
               <div className="flex-1">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -428,12 +430,12 @@ export default function ProductsPage() {
                     placeholder="Search products..."
                     value={searchTerm}
                     onChange={(e) => handleSearch(e.target.value)}
-                    className="pl-10"
+                    className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200"
                   />
                 </div>
               </div>
               <div className="flex items-center space-x-2">
-                <Button variant="secondary" size="sm" onClick={handleRefresh}>
+                <Button variant="outline-secondary" size="sm" onClick={handleRefresh} className="hover:scale-105 transition-transform duration-200">
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Refresh
                 </Button>
@@ -442,6 +444,7 @@ export default function ProductsPage() {
                     variant="error"
                     size="sm"
                     onClick={handleBulkDelete}
+                    className="hover:scale-105 transition-transform duration-200"
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
                     Delete ({selectedProducts.length})
@@ -458,7 +461,7 @@ export default function ProductsPage() {
                   <select
                     value={filters.status}
                     onChange={(e) => handleFilterChange('status', e.target.value)}
-                    className="input"
+                    className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md transition-all duration-200"
                   >
                     <option value="">All Status</option>
                     <option value="active">Active</option>
@@ -472,7 +475,7 @@ export default function ProductsPage() {
                   <select
                     value={filters.sortBy}
                     onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                    className="input"
+                    className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md transition-all duration-200"
                   >
                     <option value="createdAt">Created Date</option>
                     <option value="name">Name</option>
@@ -486,7 +489,7 @@ export default function ProductsPage() {
                   <select
                     value={filters.sortOrder}
                     onChange={(e) => handleFilterChange('sortOrder', e.target.value)}
-                    className="input"
+                    className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md transition-all duration-200"
                   >
                     <option value="DESC">Descending</option>
                     <option value="ASC">Ascending</option>
@@ -498,7 +501,7 @@ export default function ProductsPage() {
         </Card>
 
         {/* Products Table */}
-        <Card>
+        <Card className="w-full max-w-screen-xl mx-auto bg-accent-50">
           <CardHeader>
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-medium text-gray-900">All Products</h3>
@@ -514,6 +517,7 @@ export default function ProductsPage() {
               loading={loading}
               rowKey="id"
               emptyText="No products found"
+              className="bg-accent-100 rounded-lg shadow-sm"
             />
             
             {/* Pagination */}
@@ -527,7 +531,7 @@ export default function ProductsPage() {
                 
                 <div className="flex items-center space-x-2">
                   <Button
-                    variant="secondary"
+                    variant="outline-secondary"
                     size="sm"
                     onClick={() => handlePageChange(pagination.currentPage - 1)}
                     disabled={!pagination.hasPrev}
@@ -541,7 +545,7 @@ export default function ProductsPage() {
                       return (
                         <Button
                           key={page}
-                          variant={page === pagination.currentPage ? "primary" : "secondary"}
+                          variant={page === pagination.currentPage ? "accent" : "outline-secondary"}
                           size="sm"
                           onClick={() => handlePageChange(page)}
                         >
@@ -552,7 +556,7 @@ export default function ProductsPage() {
                   </div>
                   
                   <Button
-                    variant="secondary"
+                    variant="outline-secondary"
                     size="sm"
                     onClick={() => handlePageChange(pagination.currentPage + 1)}
                     disabled={!pagination.hasNext}

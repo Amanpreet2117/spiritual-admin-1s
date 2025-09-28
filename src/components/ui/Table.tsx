@@ -53,13 +53,13 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   };
 
   return (
-    <thead className="table-header">
+    <thead className="bg-gray-50">
       <tr>
         {columns.map((column) => (
           <th
             key={column.key}
             className={clsx(
-              'table-header-cell',
+              'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200',
               {
                 'cursor-pointer hover:bg-gray-100': column.sorter,
                 'text-left': column.align === 'left' || !column.align,
@@ -145,7 +145,10 @@ const TableBody = <T,>({ data, columns, rowKey, onRow, loading, emptyText }: Tab
         return (
           <tr
             key={key}
-            className={clsx('table-row', rowProps.className)}
+            className={clsx(
+              'bg-white hover:bg-gray-50 transition-colors duration-200',
+              rowProps.className
+            )}
             onClick={rowProps.onClick}
           >
             {columns.map((column) => {
@@ -156,7 +159,7 @@ const TableBody = <T,>({ data, columns, rowKey, onRow, loading, emptyText }: Tab
                 <td
                   key={column.key}
                   className={clsx(
-                    'table-cell',
+                    'px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200',
                     {
                       'text-left': column.align === 'left' || !column.align,
                       'text-center': column.align === 'center',
@@ -189,7 +192,7 @@ function Table<T extends { id?: string | number }>({
   return (
     <div className={clsx('overflow-hidden', className)}>
       <div className="overflow-x-auto">
-        <table className="table">
+        <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg">
           <TableHeader columns={columns} />
           <TableBody<T>
             data={data}

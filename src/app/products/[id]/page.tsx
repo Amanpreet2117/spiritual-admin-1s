@@ -29,6 +29,7 @@ import {
 import toast from 'react-hot-toast';
 
 import Image from 'next/image';
+import { clsx } from 'clsx';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -150,12 +151,12 @@ export default function ProductDetailPage() {
 
   return (
     <Layout title={`${product.name} - Product Details`}>
-      <div className="space-y-6">
+      <div className="space-y-6 animate-fade-in max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <Button
-              variant="secondary"
+              variant="outline-secondary"
               size="sm"
               onClick={() => router.push('/products')}
             >
@@ -171,7 +172,7 @@ export default function ProductDetailPage() {
             <Badge variant={getStatusColor(product.status)}>
               {product.status}
             </Badge>
-            <Button onClick={handleEdit}>
+            <Button variant="accent" onClick={handleEdit} className="hover:scale-105 transition-transform duration-200">
               <Edit className="h-4 w-4 mr-2" />
               Edit Product
             </Button>
@@ -182,20 +183,20 @@ export default function ProductDetailPage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Images */}
-            <Card>
+            <Card className="bg-accent-50">
               <CardHeader>
                 <h3 className="text-lg font-medium text-gray-900">Product Images</h3>
               </CardHeader>
               <CardBody>
                 {primaryImage ? (
                   <div className="space-y-4">
-                    <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
+                    <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 shadow-md">
                       <Image
                         src={primaryImage}
                         alt={product.name}
                         width={500}
                         height={500}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transform transition-transform duration-300 hover:scale-105"
                       />
                     </div>
                     {images.length > 1 && (
@@ -204,11 +205,13 @@ export default function ProductDetailPage() {
                           <button
                             key={index}
                             onClick={() => setSelectedImageIndex(index)}
-                            className={`aspect-square rounded-lg overflow-hidden border-2 ${
-                              selectedImageIndex === index
-                                ? 'border-primary-500'
-                                : 'border-gray-200'
-                            }`}
+                            className={clsx(
+                              'aspect-square rounded-lg overflow-hidden border-2 transition-all duration-200 hover:border-accent-500',
+                              {
+                                'border-accent-500': selectedImageIndex === index,
+                                'border-gray-200': selectedImageIndex !== index,
+                              }
+                            )}
                           >
                             <Image
                               src={image.imageUrl}
@@ -223,7 +226,7 @@ export default function ProductDetailPage() {
                     )}
                   </div>
                 ) : (
-                  <div className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
+                  <div className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
                     <div className="text-center">
                       <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
                       <p className="mt-2 text-sm text-gray-500">No images available</p>
@@ -234,14 +237,14 @@ export default function ProductDetailPage() {
             </Card>
 
             {/* Description */}
-            <Card>
+            <Card className="bg-accent-50">
               <CardHeader>
                 <h3 className="text-lg font-medium text-gray-900">Description</h3>
               </CardHeader>
               <CardBody>
                 {product.description ? (
                   <div className="prose max-w-none">
-                    <p className="text-gray-700 whitespace-pre-wrap">{product.description}</p>
+                    <p className="text-gray-800 whitespace-pre-wrap">{product.description}</p>
                   </div>
                 ) : (
                   <p className="text-gray-500 italic">No description available</p>
@@ -250,7 +253,7 @@ export default function ProductDetailPage() {
             </Card>
 
             {/* Product Details */}
-            <Card>
+            <Card className="bg-accent-50">
               <CardHeader>
                 <h3 className="text-lg font-medium text-gray-900">Product Details</h3>
               </CardHeader>
@@ -258,49 +261,49 @@ export default function ProductDetailPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Category</label>
+                      <label className="text-sm font-medium text-gray-600">Category</label>
                       <p className="text-gray-900">{product.category?.name || 'N/A'}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Barcode</label>
+                      <label className="text-sm font-medium text-gray-600">Barcode</label>
                       <p className="text-gray-900">{product.barcode || 'N/A'}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Weight</label>
+                      <label className="text-sm font-medium text-gray-600">Weight</label>
                       <p className="text-gray-900 flex items-center">
-                        <Weight className="h-4 w-4 mr-1" />
+                        <Weight className="h-4 w-4 mr-1 text-accent-500" />
                         {product.weight ? `${product.weight} kg` : 'N/A'}
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Dimensions</label>
+                      <label className="text-sm font-medium text-gray-600">Dimensions</label>
                       <p className="text-gray-900 flex items-center">
-                        <Ruler className="h-4 w-4 mr-1" />
+                        <Ruler className="h-4 w-4 mr-1 text-accent-500" />
                         {product.dimensions || 'N/A'}
                       </p>
                     </div>
                   </div>
                   <div className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Created</label>
+                      <label className="text-sm font-medium text-gray-600">Created</label>
                       <p className="text-gray-900 flex items-center">
-                        <Calendar className="h-4 w-4 mr-1" />
+                        <Calendar className="h-4 w-4 mr-1 text-accent-500" />
                         {formatDate(product.createdAt)}
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Last Updated</label>
+                      <label className="text-sm font-medium text-gray-600">Last Updated</label>
                       <p className="text-gray-900 flex items-center">
-                        <Calendar className="h-4 w-4 mr-1" />
+                        <Calendar className="h-4 w-4 mr-1 text-accent-500" />
                         {formatDate(product.updatedAt)}
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Tax Class</label>
+                      <label className="text-sm font-medium text-gray-600">Tax Class</label>
                       <p className="text-gray-900">{product.taxClass || 'Standard'}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Product Type</label>
+                      <label className="text-sm font-medium text-gray-600">Product Type</label>
                       <p className="text-gray-900">
                         {product.isDigital ? 'Digital' : 'Physical'}
                         {product.requiresShipping && !product.isDigital && ' (Requires Shipping)'}
@@ -313,14 +316,14 @@ export default function ProductDetailPage() {
 
             {/* Purposes */}
             {product.purposes && product.purposes.length > 0 && (
-              <Card>
+              <Card className="bg-accent-50">
                 <CardHeader>
                   <h3 className="text-lg font-medium text-gray-900">Spiritual Purposes</h3>
                 </CardHeader>
                 <CardBody>
                   <div className="flex flex-wrap gap-2">
                     {product.purposes.map((purpose) => (
-                      <Badge key={purpose.id} variant="primary">
+                      <Badge key={purpose.id} variant="accent">
                         {purpose.name}
                       </Badge>
                     ))}
@@ -331,14 +334,14 @@ export default function ProductDetailPage() {
 
             {/* Tags */}
             {product.tags && product.tags.length > 0 && (
-              <Card>
+              <Card className="bg-accent-50">
                 <CardHeader>
                   <h3 className="text-lg font-medium text-gray-900">Tags</h3>
                 </CardHeader>
                 <CardBody>
                   <div className="flex flex-wrap gap-2">
                     {product.tags.map((tag, index) => (
-                      <Badge key={index} variant="secondary">
+                      <Badge key={index} variant="outline-secondary">
                         <Tag className="h-3 w-3 mr-1" />
                         {tag}
                       </Badge>
@@ -352,21 +355,21 @@ export default function ProductDetailPage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Pricing */}
-            <Card>
+            <Card className="bg-accent-50">
               <CardHeader>
                 <h3 className="text-lg font-medium text-gray-900">Pricing</h3>
               </CardHeader>
               <CardBody className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Base Price</label>
-                  <p className="text-2xl font-bold text-gray-900 flex items-center">
-                    <DollarSign className="h-5 w-5 mr-1" />
+                  <label className="text-sm font-medium text-gray-600">Base Price</label>
+                  <p className="text-2xl font-bold text-accent-700 flex items-center">
+                    <DollarSign className="h-5 w-5 mr-1 text-accent-500" />
                     {formatPrice(product.basePrice)}
                   </p>
                 </div>
                 {product.comparePrice && (
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Compare Price</label>
+                    <label className="text-sm font-medium text-gray-600">Compare Price</label>
                     <p className="text-lg text-gray-600 line-through">
                       {formatPrice(product.comparePrice)}
                     </p>
@@ -374,7 +377,7 @@ export default function ProductDetailPage() {
                 )}
                 {product.costPrice && (
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Cost Price</label>
+                    <label className="text-sm font-medium text-gray-600">Cost Price</label>
                     <p className="text-lg text-gray-600">
                       {formatPrice(product.costPrice)}
                     </p>
@@ -382,7 +385,7 @@ export default function ProductDetailPage() {
                 )}
                 {product.isOnSale && product.salePrice && (
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Sale Price</label>
+                    <label className="text-sm font-medium text-gray-600">Sale Price</label>
                     <p className="text-xl font-bold text-success-600">
                       {formatPrice(product.salePrice)}
                     </p>
@@ -397,43 +400,44 @@ export default function ProductDetailPage() {
             </Card>
 
             {/* Inventory */}
-            <Card>
+            <Card className="bg-accent-50">
               <CardHeader>
                 <h3 className="text-lg font-medium text-gray-900">Inventory</h3>
               </CardHeader>
               <CardBody className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Stock Quantity</label>
-                  <p className={`text-2xl font-bold ${
-                    product.stock <= product.lowStockThreshold ? 'text-warning-600' : 'text-gray-900'
-                  }`}>
+                  <label className="text-sm font-medium text-gray-600">Stock Quantity</label>
+                  <p className={clsx('text-2xl font-bold', {
+                    'text-warning-700': product.stock <= product.lowStockThreshold,
+                    'text-gray-900': product.stock > product.lowStockThreshold,
+                  })}>
                     {product.stock} units
                   </p>
                   {product.stock <= product.lowStockThreshold && (
-                    <p className="text-sm text-warning-600 flex items-center mt-1">
-                      <AlertTriangle className="h-4 w-4 mr-1" />
+                    <p className="text-sm text-warning-700 flex items-center mt-1">
+                      <AlertTriangle className="h-4 w-4 mr-1 text-warning-500" />
                       Low stock alert
                     </p>
                   )}
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Low Stock Threshold</label>
+                  <label className="text-sm font-medium text-gray-600">Low Stock Threshold</label>
                   <p className="text-lg text-gray-600">{product.lowStockThreshold} units</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Sold Quantity</label>
+                  <label className="text-sm font-medium text-gray-600">Sold Quantity</label>
                   <p className="text-lg text-gray-600">{product.soldQuantity} units</p>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500">Track Quantity</span>
-                    <Badge variant={product.trackQuantity ? 'success' : 'gray'}>
+                    <span className="text-gray-600">Track Quantity</span>
+                    <Badge variant={product.trackQuantity ? 'accent' : 'gray'}>
                       {product.trackQuantity ? 'Yes' : 'No'}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500">Allow Backorder</span>
-                    <Badge variant={product.allowBackorder ? 'success' : 'gray'}>
+                    <span className="text-gray-600">Allow Backorder</span>
+                    <Badge variant={product.allowBackorder ? 'accent' : 'gray'}>
                       {product.allowBackorder ? 'Yes' : 'No'}
                     </Badge>
                   </div>
@@ -442,29 +446,29 @@ export default function ProductDetailPage() {
             </Card>
 
             {/* Performance */}
-            <Card>
+            <Card className="bg-accent-50">
               <CardHeader>
                 <h3 className="text-lg font-medium text-gray-900">Performance</h3>
               </CardHeader>
               <CardBody className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Views</label>
-                  <p className="text-lg text-gray-900 flex items-center">
-                    <Eye className="h-4 w-4 mr-1" />
+                  <label className="text-sm font-medium text-gray-600">Views</label>
+                  <p className="text-lg text-accent-700 flex items-center">
+                    <Eye className="h-4 w-4 mr-1 text-accent-500" />
                     {product.viewCount}
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Average Rating</label>
-                  <p className="text-lg text-gray-900 flex items-center">
-                    <Star className="h-4 w-4 mr-1 text-yellow-400" />
+                  <label className="text-sm font-medium text-gray-600">Average Rating</label>
+                  <p className="text-lg text-accent-700 flex items-center">
+                    <Star className="h-4 w-4 mr-1 text-yellow-500" />
                     {product.averageRating.toFixed(1)} ({product.reviewCount} reviews)
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Sales</label>
-                  <p className="text-lg text-gray-900 flex items-center">
-                    <ShoppingCart className="h-4 w-4 mr-1" />
+                  <label className="text-sm font-medium text-gray-600">Sales</label>
+                  <p className="text-lg text-accent-700 flex items-center">
+                    <ShoppingCart className="h-4 w-4 mr-1 text-accent-500" />
                     {product.soldQuantity} units
                   </p>
                 </div>
@@ -472,7 +476,7 @@ export default function ProductDetailPage() {
             </Card>
 
             {/* Product Flags */}
-            <Card>
+            <Card className="bg-accent-50">
               <CardHeader>
                 <h3 className="text-lg font-medium text-gray-900">Product Flags</h3>
               </CardHeader>
@@ -480,31 +484,31 @@ export default function ProductDetailPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-700">Featured</span>
-                    <Badge variant={product.isFeatured ? 'success' : 'gray'}>
+                    <Badge variant={product.isFeatured ? 'accent' : 'gray'}>
                       {product.isFeatured ? 'Yes' : 'No'}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-700">New Product</span>
-                    <Badge variant={product.isNew ? 'success' : 'gray'}>
+                    <Badge variant={product.isNew ? 'accent' : 'gray'}>
                       {product.isNew ? 'Yes' : 'No'}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-700">Best Seller</span>
-                    <Badge variant={product.isBestSeller ? 'success' : 'gray'}>
+                    <Badge variant={product.isBestSeller ? 'accent' : 'gray'}>
                       {product.isBestSeller ? 'Yes' : 'No'}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-700">Trending</span>
-                    <Badge variant={product.isTrending ? 'success' : 'gray'}>
+                    <Badge variant={product.isTrending ? 'accent' : 'gray'}>
                       {product.isTrending ? 'Yes' : 'No'}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-700">On Sale</span>
-                    <Badge variant={product.isOnSale ? 'success' : 'gray'}>
+                    <Badge variant={product.isOnSale ? 'accent' : 'gray'}>
                       {product.isOnSale ? 'Yes' : 'No'}
                     </Badge>
                   </div>
@@ -514,20 +518,20 @@ export default function ProductDetailPage() {
 
             {/* SEO */}
             {(product.metaTitle || product.metaDescription) && (
-              <Card>
+              <Card className="bg-accent-50">
                 <CardHeader>
                   <h3 className="text-lg font-medium text-gray-900">SEO</h3>
                 </CardHeader>
                 <CardBody className="space-y-4">
                   {product.metaTitle && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Meta Title</label>
+                      <label className="text-sm font-medium text-gray-600">Meta Title</label>
                       <p className="text-sm text-gray-700">{product.metaTitle}</p>
                     </div>
                   )}
                   {product.metaDescription && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Meta Description</label>
+                      <label className="text-sm font-medium text-gray-600">Meta Description</label>
                       <p className="text-sm text-gray-700">{product.metaDescription}</p>
                     </div>
                   )}

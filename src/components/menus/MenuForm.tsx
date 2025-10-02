@@ -165,7 +165,7 @@ const MenuForm: React.FC<MenuFormProps> = ({ initialData, allMenus, onSubmit, on
         />
       </div>
       <div className="flex justify-end space-x-2">
-        <Button type="button" onClick={onCancel} variant="outline">Cancel</Button>
+        <Button type="button" onClick={onCancel} variant="outline-secondary">Cancel</Button>
         <Button type="submit">{initialData ? 'Update' : 'Create'}</Button>
       </div>
     </form>

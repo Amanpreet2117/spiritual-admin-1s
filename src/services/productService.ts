@@ -35,7 +35,7 @@ export class ProductService {
       }
       
       const response = await apiClient.get<PaginatedResponse<Product>>(`/api/admin/products?${params.toString()}`);
-      return response.data;
+      return response;
     } catch (error) {
       console.error('Error fetching products:', error);
       throw error;
@@ -45,19 +45,19 @@ export class ProductService {
   // Get product by ID
   static async getProductById(id: number): Promise<Product> {
     const response = await apiClient.get<Product>(`/api/admin/products/${id}`);
-    return response.data;
+    return response;
   }
 
   // Create new product
   static async createProduct(productData: ProductFormData): Promise<Product> {
     const response = await apiClient.post<Product>('/api/admin/products', productData);
-    return response.data;
+    return response;
   }
 
   // Update product
   static async updateProduct(id: number, productData: Partial<ProductFormData>): Promise<Product> {
     const response = await apiClient.put<Product>(`/api/admin/products/${id}`, productData);
-    return response.data;
+    return response;
   }
 
   // Delete product
@@ -78,18 +78,18 @@ export class ProductService {
   // Get low stock products
   static async getLowStockProducts(): Promise<Product[]> {
     const response = await apiClient.get<Product[]>('/api/admin/products/low-stock');
-    return response.data;
+    return response;
   }
 
   // Category CRUD operations
   static async createCategory(categoryData: Partial<Category>): Promise<Category> {
     const response = await apiClient.post<Category>('/api/categories', categoryData);
-    return response.data;
+    return response;
   }
 
   static async updateCategory(id: number, categoryData: Partial<Category>): Promise<Category> {
     const response = await apiClient.put<Category>(`/api/categories/${id}`, categoryData);
-    return response.data;
+    return response;
   }
 
   static async deleteCategory(id: number): Promise<void> {
@@ -99,12 +99,12 @@ export class ProductService {
   // Purpose CRUD operations
   static async createPurpose(purposeData: Partial<Purpose>): Promise<Purpose> {
     const response = await apiClient.post<Purpose>('/api/purposes', purposeData);
-    return response.data;
+    return response;
   }
 
   static async updatePurpose(id: number, purposeData: Partial<Purpose>): Promise<Purpose> {
     const response = await apiClient.put<Purpose>(`/api/purposes/${id}`, purposeData);
-    return response.data;
+    return response;
   }
 
   static async deletePurpose(id: number): Promise<void> {
@@ -114,19 +114,19 @@ export class ProductService {
   // Update product stock
   static async updateProductStock(id: number, stock: number): Promise<Product> {
     const response = await apiClient.put<Product>(`/api/admin/products/${id}/stock`, { stock });
-    return response.data;
+    return response;
   }
 
   // Get product statistics
   static async getProductStats(): Promise<any> {
     const response = await apiClient.get('/api/admin/products/stats');
-    return response.data;
+    return response;
   }
 
   // Product Images
   static async addProductImage(productId: number, imageData: { imageUrl: string; altText?: string; isPrimary?: boolean }): Promise<ProductImage> {
     const response = await apiClient.post<ProductImage>(`/api/admin/products/${productId}/images`, imageData);
-    return response.data;
+    return response;
   }
 
   static async removeProductImage(productId: number, imageId: number): Promise<void> {
@@ -136,12 +136,12 @@ export class ProductService {
   // Product Variants
   static async createProductVariant(productId: number, variantData: Partial<Variant>): Promise<Variant> {
     const response = await apiClient.post<Variant>(`/api/admin/products/${productId}/variants`, variantData);
-    return response.data;
+    return response;
   }
 
   static async updateProductVariant(productId: number, variantId: number, variantData: Partial<Variant>): Promise<Variant> {
     const response = await apiClient.put<Variant>(`/api/admin/products/${productId}/variants/${variantId}`, variantData);
-    return response.data;
+    return response;
   }
 
   static async deleteProductVariant(productId: number, variantId: number): Promise<void> {
@@ -151,7 +151,7 @@ export class ProductService {
   // Product Purposes
   static async getProductPurposes(productId: number): Promise<Purpose[]> {
     const response = await apiClient.get<Purpose[]>(`/api/admin/products/${productId}/purposes`);
-    return response.data;
+    return response;
   }
 
   static async attachPurpose(productId: number, purposeId: number): Promise<void> {
@@ -165,13 +165,13 @@ export class ProductService {
   // Categories
   static async getCategories(): Promise<Category[]> {
     const response = await apiClient.get<Category[]>('/api/categories');
-    return response.data;
+    return response;
   }
 
   // Purposes
   static async getPurposes(): Promise<Purpose[]> {
     const response = await apiClient.get<Purpose[]>('/api/purposes');
-    return response.data;
+    return response;
   }
 }
 

@@ -8,13 +8,17 @@ export class AuthService {
     try {
       const response = await apiClient.post<{ user: User; token: string }>('/api/auth/login', credentials);
       
-      if (response.success && response.data.token) {
+      if (response.token) {
         // Store token and user data in cookies
-        Cookies.set('admin_token', response.data.token, { expires: 7 }); // 7 days
-        Cookies.set('admin_user', JSON.stringify(response.data.user), { expires: 7 });
+        Cookies.set('admin_token', response.token, { expires: 7 }); // 7 days
+        Cookies.set('admin_user', JSON.stringify(response.user), { expires: 7 });
       }
       
-      return response;
+      return {
+        success: true,
+        message: "Login successful",
+        data: response,
+      };
     } catch (error: any) {
       // Handle authentication errors
       throw new Error(error.response?.data?.message || 'Login failed');
@@ -67,8 +71,8 @@ export class AuthService {
   static async refreshToken(): Promise<boolean> {
     try {
       const response = await apiClient.post<{ user: User; token: string }>('/api/auth/refresh');
-      if (response.success && response.data.token) {
-        Cookies.set('admin_token', response.data.token, { expires: 7 });
+      if (response.token) {
+        Cookies.set('admin_token', response.token, { expires: 7 });
         return true;
       }
       return false;

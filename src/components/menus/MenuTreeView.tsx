@@ -24,8 +24,8 @@ const MenuTreeItem: React.FC<{ menu: MenuItem; onEdit: (menu: MenuItem) => void;
       <div className="flex items-center justify-between p-2 bg-gray-100 rounded-md">
         <span className="font-medium">{menu.title} {menu.url && `(${menu.url})`} - Order: {menu.order_no}</span>
         <div>
-          <Button variant="outline" size="sm" onClick={() => onEdit(menu)} className="mr-2">Edit</Button>
-          <Button variant="destructive" size="sm" onClick={() => onDelete(menu.id)}>Delete</Button>
+          <Button variant="outline-secondary" size="sm" onClick={() => onEdit(menu)} className="mr-2">Edit</Button>
+          <Button variant="error" size="sm" onClick={() => onDelete(menu.id)}>Delete</Button>
         </div>
       </div>
       {menu.children && menu.children.length > 0 && (

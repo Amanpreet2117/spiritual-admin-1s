@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
-import { ApiResponse, PaginatedResponse } from '@/types';
+import { ApiResponse, PaginatedResponse, MenuItem, Category } from '@/types';
 
 class ApiClient {
   private client: AxiosInstance;
@@ -53,46 +53,47 @@ class ApiClient {
   }
 
   // Generic request methods
-  async get<T = any>(url: string, params?: any): Promise<ApiResponse<T>> {
-    const response = await this.client.get(url, { params });
-    return response.data;
+  async get<T = any>(url: string, params?: any): Promise<T> {
+    const response = await this.client.get<ApiResponse<T>>(url, { params });
+    console.log(`ApiClient.get: Raw Axios response for ${url}:`, response);
+    console.log(`ApiClient.get: Extracted ApiResponse object (response.data):`, response.data);
+    return response.data.data; 
   }
 
-  async post<T = any>(url: string, data?: any): Promise<ApiResponse<T>> {
-    const response = await this.client.post(url, data);
-    return response.data;
+  async post<T = any>(url: string, data?: any): Promise<T> {
+    const response = await this.client.post<ApiResponse<T>>(url, data);
+    return response.data.data; 
   }
 
-  async put<T = any>(url: string, data?: any): Promise<ApiResponse<T>> {
-    const response = await this.client.put(url, data);
-    return response.data;
+  async put<T = any>(url: string, data?: any): Promise<T> {
+    const response = await this.client.put<ApiResponse<T>>(url, data);
+    return response.data.data; 
   }
 
-  async patch<T = any>(url: string, data?: any): Promise<ApiResponse<T>> {
-    const response = await this.client.patch(url, data);
-    return response.data;
+  async patch<T = any>(url: string, data?: any): Promise<T> {
+    const response = await this.client.patch<ApiResponse<T>>(url, data);
+    return response.data.data; 
   }
 
-  async delete<T = any>(url: string, data?: any): Promise<ApiResponse<T>> {
-    const response = await this.client.delete(url, { data });
-    return response.data;
+  async delete<T = any>(url: string, data?: any): Promise<void> {
+    await this.client.delete<ApiResponse<T>>(url, { data });
   }
 
   // Upload file method
-  async uploadFile(file: File, path?: string): Promise<ApiResponse<{ url: string; key: string }>> {
+  async uploadFile(file: File, path?: string): Promise<{ url: string; key: string }> {
     const formData = new FormData();
     formData.append('file', file);
     if (path) {
       formData.append('path', path);
     }
 
-    const response = await this.client.post('/api/upload', formData, {
+    const response = await this.client.post<ApiResponse<{ url: string; key: string }>>('/api/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
 
-    return response.data;
+    return response.data.data;
   }
 }
 
@@ -100,3 +101,25 @@ class ApiClient {
 const apiClient = new ApiClient();
 
 export default apiClient;
+
+// Menu API calls
+export const fetchMenus = async (): Promise<MenuItem[]> => {
+  return apiClient.get<MenuItem[]>('/api/menus');
+};
+
+export const createMenu = async (menuData: Omit<MenuItem, 'id' | 'children'>): Promise<MenuItem> => {
+  return apiClient.post<MenuItem>('/api/menus', menuData);
+};
+
+export const updateMenu = async (id: number, menuData: Omit<MenuItem, 'id' | 'children'>): Promise<MenuItem> => {
+  return apiClient.put<MenuItem>(`/api/menus/${id}`, menuData);
+};
+
+export const deleteMenu = async (id: number): Promise<void> => {
+  await apiClient.delete(`/api/menus/${id}`);
+};
+
+// Category API calls
+export const fetchCategories = async (): Promise<Category[]> => {
+  return apiClient.get<Category[]>('/api/categories');
+};

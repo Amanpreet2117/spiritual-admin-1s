@@ -337,3 +337,13 @@ export interface UploadResponse {
   url: string;
   key: string;
 }
+
+// Menu Types
+export interface MenuItem {
+  id: number;
+  title: string;
+  url: string | null;
+  parent_id: number | null;
+  order_no: number;
+  children?: MenuItem[];
+}

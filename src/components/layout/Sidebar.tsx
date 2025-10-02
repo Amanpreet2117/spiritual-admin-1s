@@ -40,6 +40,7 @@ const navigation: NavigationItem[] = [
       { name: 'All Products', href: '/products', icon: Package },
       { name: 'Categories', href: '/products/categories', icon: Tag },
       { name: 'Purposes', href: '/products/purposes', icon: Heart },
+      { name: 'Menus', href: '/menus', icon: Menu },
       { name: 'Low Stock', href: '/products/low-stock', icon: FileText },
     ],
   },
